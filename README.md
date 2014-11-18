@@ -1,7 +1,7 @@
 pixie.dust
 ==========
-어플리케이션에서 호출하는 클래스와 메소드들에 대한 로그를 출력하는 Agent
+This is an agent, which outputs the name of the method that is performed in the Application.
 
-사용법
+Usage
 ==========
 
