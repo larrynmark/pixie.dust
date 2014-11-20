@@ -12,6 +12,7 @@ import org.objectweb.asm.Opcodes;
 import pixie.dust.asm.TraceTransformer;
 import pixie.dust.asm.Transformer;
 
+
 public class AgentTransformer implements ClassFileTransformer {
 
 	public byte[] transform(ClassLoader loader, String className,
@@ -27,7 +28,7 @@ public class AgentTransformer implements ClassFileTransformer {
 		ClassReader cr = new ClassReader(classfileBuffer);
 		final ClassDesc classDesc = new ClassDesc();
 
-		cr.accept(new ClassVisitor(Opcodes.ASM4) {
+		cr.accept(new ClassVisitor(Opcodes.ASM5) {
 			public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
 				classDesc.set(version, access, name, signature, superName, interfaces);
 			}
@@ -41,8 +42,8 @@ public class AgentTransformer implements ClassFileTransformer {
 		case Opcodes.V1_4:
 		case Opcodes.V1_5:
 		case Opcodes.V1_6:
-//		case Opcodes.V1_7:
-//		case Opcodes.V1_8:
+		case Opcodes.V1_7:
+		case Opcodes.V1_8:
 			cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 			break;
 		default:

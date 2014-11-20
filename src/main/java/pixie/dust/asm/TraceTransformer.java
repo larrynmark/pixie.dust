@@ -16,18 +16,22 @@ public class TraceTransformer implements Transformer {
 
 	static {
 		// TODO Enter the desired package name for analysis
-		target.add("org/apache/commons/dbcp/PoolingDriver");
-		target.add("org/apache/commons/dbcp/PoolableConnection");
-		target.add("org/apache/commons/dbcp/PoolingDataSource");
-		
+		target.add("redis/clients/jedis");
 	}
 
 	public ClassVisitor transform(ClassVisitor cv, String className, ClassDesc classDesc) {
 
+		for(String targetName : target) {
+			if (className.startsWith(targetName)) {
+				return new TraceVisitor(className, cv);
+			}
+		}
+
+/*		
 		if (target.contains(className)) {
 			return new TraceVisitor(className, cv);
 		}
-		
+*/		
 		return cv;
 	}
 
