@@ -2,6 +2,10 @@ pixie.dust
 ==========
 This is an agent, which outputs the name of the method that is performed in the Application.
 
+Precautions
+==========
+You must modify the package name to be analyzed in TraceTransformer Class.
+
 Build
 ==========
 mvn clean assembly:assembly
