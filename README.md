@@ -13,6 +13,7 @@ mvn clean assembly:assembly
 Usage
 ==========
 Add to your application of the instruction as follows :
+
 "-javaagent:pixie-dust-jar-with-dependencies.jar"
 
 Output Example
