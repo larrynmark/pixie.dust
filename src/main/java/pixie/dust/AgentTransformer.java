@@ -3,18 +3,30 @@ package pixie.dust;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 
+import pixie.dust.asm.JedisTransformer;
 import pixie.dust.asm.TraceTransformer;
 import pixie.dust.asm.Transformer;
 
 
 public class AgentTransformer implements ClassFileTransformer {
 
+	private static List<Transformer> transformers = new ArrayList<Transformer>();
+	
+	static {
+
+//		transformers.add(new TraceTransformer());
+		transformers.add(new JedisTransformer());
+	
+	}
+	
 	public byte[] transform(ClassLoader loader, String className,
 			Class<?> classBeingRedefined, ProtectionDomain protectionDomain,
 			byte[] classfileBuffer) throws IllegalClassFormatException {
@@ -50,11 +62,11 @@ public class AgentTransformer implements ClassFileTransformer {
 			cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
 		}
 
-		Transformer transformer = new TraceTransformer();
-		
 		ClassVisitor cv = cw;
 
-		cv = transformer.transform(cv, className, classDesc);
+		for (int i = 0, max = transformers.size(); i < max; i++) {
+			cv = transformers.get(i).transform(cv, className, classDesc);
+		}
 		
 		if (cv != cw) {
 			cr.accept(cv, ClassReader.EXPAND_FRAMES);
